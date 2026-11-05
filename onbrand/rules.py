@@ -125,7 +125,7 @@ class Profile:
                              if pack == "crypto" else
                              f"Compliance ({spec['label']}): {spec['disclaimer_hint']}.")
         if self.examples:
-            lines.append("On-brand examples: " + " | ".join(self.examples[:3]))
+            lines.append("Tone examples (copy the voice only; never reuse their facts, numbers or claims, and never state anything the user did not give you): " + " | ".join(self.examples[:3]))
         if self.notes:
             lines.append(f"Notes: {self.notes}")
         return " ".join(lines)
