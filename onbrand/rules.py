@@ -99,6 +99,9 @@ class Profile:
             lines.append("Write as the brand in the first person plural ('we', 'our').")
         if self.tone:
             lines.append(f"Tone: {self.tone}.")
+        lines.append("Use only facts the user gave you. Never invent features, audits, partnerships, "
+                     "numbers or proof points. NFA and DYOR are disclaimers (not financial advice / do "
+                     "your own research), not products or tokens.")
         if self.banned:
             lines.append("Never use: " + ", ".join(repr(b) for b in self.banned) + ".")
         if self.preferred:

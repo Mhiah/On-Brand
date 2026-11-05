@@ -28,7 +28,7 @@ _CTX: Any = None
 
 STARTER_PROFILES = [
     Profile(name="nimbus", display_name="Nimbus Protocol", person="third",
-            tone="calm, precise, quietly confident; explains before it sells",
+            tone="calm, precise, quietly confident; plain and factual",
             banned=["revolutionary", "game-changer", "unlock", "to the moon", "LFG"],
             preferred={"NIMBUS": "Nimbus", "nimbus protocol": "Nimbus Protocol", "defi": "DeFi"},
             packs=["crypto"], max_chars=280, max_hashtags=1, max_emojis=1, max_exclamations=0,
