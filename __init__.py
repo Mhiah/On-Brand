@@ -32,8 +32,8 @@ STARTER_PROFILES = [
             banned=["revolutionary", "game-changer", "unlock", "to the moon", "LFG"],
             preferred={"NIMBUS": "Nimbus", "nimbus protocol": "Nimbus Protocol", "defi": "DeFi"},
             packs=["crypto"], max_chars=280, max_hashtags=1, max_emojis=1, max_exclamations=0,
-            examples=["Nimbus Protocol settles cross-chain swaps in one block. The team shipped the "
-                      "audit report today, and it's public."]),
+            examples=["Nimbus Protocol has opened a new feature to its community. The team explains "
+                      "how it works first, then points to where the details live."]),
     Profile(name="pixel-pals", display_name="Pixel Pals", person="first",
             tone="playful, warm, community-first; short sentences",
             banned=["utility", "roadmap drop", "alpha leak"],
