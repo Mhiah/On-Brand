@@ -4,7 +4,7 @@ version: 0.1.0
 description: "Brand voice and compliance rules Hermes can't break. Per-brand profiles (person, tone, banned words, exact spellings, required tags, length/emoji/hashtag limits, crypto and health compliance packs). Every draft is scored by a deterministic linter, auto-fixed by your active model until it passes, and off-brand outbound posts are blocked before they send. Includes /onbrand, four agent tools, a Desktop pane and an on-brand voiceover script mode. Local: no network calls of its own."
 author: "Mhiah"
 license: MIT
-requires_hermes: ">=0.23"
+requires_hermes: ">=0.22.7"
 tags: [brand, copywriting, marketing, compliance, guardrails, content]
 provides_tools:
   - onbrand_check
