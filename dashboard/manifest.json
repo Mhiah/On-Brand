@@ -1,0 +1,9 @@
+{
+  "name": "on-brand",
+  "label": "On-Brand",
+  "description": "Brand voice and compliance rules Hermes can't break.",
+  "version": "0.1.0",
+  "tab": { "hidden": true },
+  "entry": "dist/index.js",
+  "api": "plugin_api.py"
+}

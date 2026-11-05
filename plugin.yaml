@@ -1,0 +1,26 @@
+manifest_version: 2
+name: on-brand
+version: 0.1.0
+description: "Brand voice and compliance rules Hermes can't break. Per-brand profiles (person, tone, banned words, exact spellings, required tags, length/emoji/hashtag limits, crypto and health compliance packs). Every draft is scored by a deterministic linter, auto-fixed by your active model until it passes, and off-brand outbound posts are blocked before they send. Includes /onbrand, four agent tools, a Desktop pane and an on-brand voiceover script mode. Local: no network calls of its own."
+author: "Mhiah"
+license: MIT
+requires_hermes: ">=0.23"
+tags: [brand, copywriting, marketing, compliance, guardrails, content]
+provides_tools:
+  - onbrand_check
+  - onbrand_rules
+  - onbrand_learn
+  - onbrand_voiceover
+provides_hooks:
+  - pre_llm_call
+  - transform_llm_output
+  - pre_tool_call
+config_schema:
+  hold_stream:
+    type: bool
+    default: false
+    description: "Show replies only after On-Brand has checked and fixed them (no flash of off-brand text). Holds every reply in this profile while the plugin is enabled. Takes effect after a restart."
+  repair_timeout:
+    type: int
+    default: 12
+    description: "Seconds allowed for each model rewrite of an off-brand draft."
