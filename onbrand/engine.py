@@ -168,7 +168,7 @@ def enforce(text: str, profile: Profile, llm: Optional[LLM], *, scope: str = "dr
 # --- outbound gate ---------------------------------------------------------------------------------
 
 DEFAULT_GATE_PATTERNS = [r"send", r"post", r"tweet", r"publish", r"reply", r"cast", r"(^|_)dm($|_)",
-                         r"broadcast", r"announce", r"schedule_(post|tweet)", r"create_(post|tweet)"]
+                         r"broadcast", r"announce", r"webhook", r"create_message", r"discord", r"telegram", r"slack", r"schedule_(post|tweet)", r"create_(post|tweet)"]
 _TEXT_KEYS = ("text", "content", "message", "body", "caption", "tweet", "status", "post", "html",
               "markdown", "description", "comment", "reply")
 _NEVER_GATE = {"onbrand_check", "onbrand_voiceover", "onbrand_learn", "read_file", "search_files",

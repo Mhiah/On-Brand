@@ -93,3 +93,8 @@ def test_gate_helpers():
     assert not engine.is_outbound("onbrand_check")
     args = {"chat_id": 5, "message": "hello", "meta": {"caption": "pic"}}
     assert engine.outbound_text(args) == "hello\n\npic"
+
+
+def test_gate_catches_webhook_tools():
+    assert engine.is_outbound("connectors__discordbot__EXECUTE_WEBHOOK")
+    assert not engine.is_outbound("read_file")
