@@ -120,7 +120,7 @@ def fix_draft(draft: str, profile: Profile, llm: Optional[LLM], *, max_repairs: 
 
 def _flag_note(result: DraftResult) -> str:
     issues = "; ".join(v.detail for v in result.verdict_after.violations)
-    return f"\n> On-Brand: still off brand ({result.verdict_after.score}/100): {issues}"
+    return f"\n\nOn-Brand: still off brand ({result.verdict_after.score}/100): {issues}"
 
 
 def enforce(text: str, profile: Profile, llm: Optional[LLM], *, scope: str = "drafts",

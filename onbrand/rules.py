@@ -34,8 +34,8 @@ PACKS: dict[str, dict[str, Any]] = {
             (r"\b(to the moon|moon(ing)?\s+soon|next 100x|get rich|life[- ]changing (money|gains))\b",
              "hype price prediction"),
             (r"\b(buy|ape|load up)\s+(now|today|before it'?s too late)\b", "pushes an urgent buy"),
-            (r"\b(offers?|earns?|pays?|get|gives?|delivers?|yields?|returns?|up to|projected|expected)\b"
-             r"[^.!?\n]{0,30}\b\d+(\.\d+)?\s?%\s?(returns?|apy|apr|yield|profits?|gains?|interest|rewards?)\b",
+            (r"(\b\d+(\.\d+)?\s?%\s?(returns?|apy|apr|yield|profits?|gains?|interest|rewards?)\b|"
+             r"\b(returns?|apy|apr|yield|rewards?)\s+(of|at|around|near|up to)\s+\d+(\.\d+)?\s?%)",
              "promises a specific return rate"),
         ],
         "triggers": r"\b(price|token|invest(ing|ment)?|returns?|apy|apr|yield|airdrop|presale|"
@@ -236,7 +236,7 @@ def lint(text: str, profile: Profile) -> Verdict:
         if not spec:
             continue
         for pattern, label in spec["forbidden"]:
-            if label and re.search(pattern, text, re.IGNORECASE):
+            if label and _affirmed(pattern, text):
                 add("compliance", HARD, f"{spec['label']}: {label}")
         if re.search(spec["triggers"], text, re.IGNORECASE):
             has_disclaimer = any(_phrase_re(d).search(text) for d in spec["disclaimers"])
@@ -245,6 +245,20 @@ def lint(text: str, profile: Profile) -> Verdict:
 
     score = 100 - 22 * sum(v.severity == HARD for v in found) - 8 * sum(v.severity == SOFT for v in found)
     return Verdict(score=max(0, score), violations=found)
+
+
+_NEGATION = re.compile(r"\b(not|never|no(thing)?|isn'?t|aren'?t|is\s+not|are\s+not|without|nor|cannot|can'?t|won'?t)\b"
+                       r"[^.!?\n]{0,25}$", re.IGNORECASE)
+
+
+def _affirmed(pattern: str, text: str) -> bool:
+    """True when the pattern matches somewhere it is not negated ("not risk-free" is a warning,
+    not a claim)."""
+    for m in re.finditer(pattern, text, re.IGNORECASE):
+        start = max(text.rfind(".", 0, m.start()), text.rfind("\n", 0, m.start())) + 1
+        if not _NEGATION.search(text[start:m.start()]):
+            return True
+    return False
 
 
 def mechanical_fix(text: str, profile: Profile) -> str:

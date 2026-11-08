@@ -75,3 +75,14 @@ def test_crypto_flags_promised_return_rate():
     assert any("specific return rate" in v.detail for v in bad.violations)
     ok = lint("Nimbus Protocol has launched staking. Returns are not guaranteed. NFA.", p)
     assert not any("specific return rate" in v.detail for v in ok.violations)
+
+
+def test_negated_risk_is_not_a_claim():
+    from onbrand.rules import Profile, lint
+    p = Profile(name="n", display_name="N", packs=["crypto"])
+    for ok in ("Nothing here is risk-free. NFA.", "Staking is not risk-free. DYOR.",
+               "Returns are not guaranteed. NFA."):
+        assert lint(ok, p).score == 100, ok
+    for bad in ("Zero risk staking. NFA.", "Risk-free yield for holders. NFA.",
+                "Staking targets 50% returns. NFA.", "Rewards of up to 12% APY. DYOR."):
+        assert lint(bad, p).score < 100, bad
