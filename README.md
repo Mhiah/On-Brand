@@ -130,7 +130,7 @@ each one is checked again before it can replace your draft.
   Hermes' `ctx.llm`, which sends the draft, the brand rules and the problems found to the provider
   and model you already use in Hermes.
 - **It can block tool calls.** While a brand is active and the gate is on, outbound tools
-  (names containing send, post, tweet, publish, reply, cast, dm, broadcast, announce) that carry
+  (names containing send, post, tweet, publish, reply, cast, dm, broadcast, announce, webhook, create_message, discord, telegram, slack) that carry
   copy breaking a hard rule are refused with an explanation. `/onbrand gate off` disables this.
 - **It can change replies.** While a brand is active, ` ```copy ` blocks in Hermes' replies are
   replaced with corrected versions (`/onbrand autofix off` reports problems without rewriting).
