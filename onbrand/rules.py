@@ -34,6 +34,9 @@ PACKS: dict[str, dict[str, Any]] = {
             (r"\b(to the moon|moon(ing)?\s+soon|next 100x|get rich|life[- ]changing (money|gains))\b",
              "hype price prediction"),
             (r"\b(buy|ape|load up)\s+(now|today|before it'?s too late)\b", "pushes an urgent buy"),
+            (r"\b(offers?|earns?|pays?|get|gives?|delivers?|yields?|returns?|up to|projected|expected)\b"
+             r"[^.!?\n]{0,30}\b\d+(\.\d+)?\s?%\s?(returns?|apy|apr|yield|profits?|gains?|interest|rewards?)\b",
+             "promises a specific return rate"),
         ],
         "triggers": r"\b(price|token|invest(ing|ment)?|returns?|apy|apr|yield|airdrop|presale|"
                     r"staking rewards?|profit|pump|mint price|floor price)\b",
@@ -123,8 +126,8 @@ class Profile:
         for pack in self.packs:
             spec = PACKS.get(pack)
             if spec:
-                lines.append(f"Compliance ({spec['label']}): no guaranteed returns, no 'risk-free', "
-                             f"no hype price predictions; {spec['disclaimer_hint']}."
+                lines.append(f"Compliance ({spec['label']}): no guaranteed returns or promised "
+                             f"return rates, no 'risk-free', no hype price predictions; {spec['disclaimer_hint']}."
                              if pack == "crypto" else
                              f"Compliance ({spec['label']}): {spec['disclaimer_hint']}.")
         if self.examples:

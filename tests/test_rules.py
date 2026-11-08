@@ -66,3 +66,12 @@ def test_mechanical_fix():
 def test_brief_mentions_rules():
     b = nimbus().brief()
     assert "THIRD person" in b and "revolutionary" in b and "NFA" in b
+
+
+def test_crypto_flags_promised_return_rate():
+    from onbrand.rules import Profile, lint
+    p = Profile(name="n", display_name="N", packs=["crypto"])
+    bad = lint("Nimbus Protocol's staking program offers 50% returns. NFA.", p)
+    assert any("specific return rate" in v.detail for v in bad.violations)
+    ok = lint("Nimbus Protocol has launched staking. Returns are not guaranteed. NFA.", p)
+    assert not any("specific return rate" in v.detail for v in ok.violations)
