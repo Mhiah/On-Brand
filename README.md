@@ -12,26 +12,35 @@ Hermes tries to post through a tool is checked at the door.
 
 ```
 you    ›  /onbrand use nimbus
-you    ›  write a tweet announcing the testnet and the airdrop
-
-model draft (never shown):
-          We're thrilled to launch our revolutionary testnet! Claim the airdrop before it's too late 🚀🚀
+you    ›  rewrite this intern draft for Nimbus: "We're going to the moon!!! 🚀🚀🚀 Stake now
+          for GUARANTEED 50% returns, zero risk. LFG #staking #crypto #moon"
 
 hermes ›  ```copy
-          Nimbus Protocol opened its testnet today. Builders can bridge test assets in one block,
-          and airdrop details are in the docs. NFA.
+          Nimbus Protocol has launched its new staking feature. Returns are not guaranteed
+          and vary with market conditions. NFA. #Nimbus
           ```
 
-pane   ›  [fixed] Nimbus Protocol · draft   18 → 100
-          ✓ first person (our, we) in a third-person brand
-          ✓ banned word 'revolutionary'
-          ✓ 2 emoji, limit is 1
-          ✓ 1 exclamation mark, limit is 0
-          ✓ Crypto / Web3 promotion: add 'NFA' or 'DYOR' when talking about price, tokens or returns
+you    ›  /onbrand check We're going to the moon!!! 🚀🚀🚀 GUARANTEED 50% returns, zero risk. LFG
+on-brand › Nimbus Protocol: 0/100: banned word 'to the moon'; banned word 'LFG'; 3 emoji, limit
+          is 1; 3 exclamation marks, limit is 0; promises guaranteed returns; claims no risk;
+          hype price prediction; add 'NFA' or 'DYOR' when talking about price, tokens or returns
 ```
 
-With `hold_stream` on, the user only ever sees the fixed version. With it off, the draft streams
-and is replaced when the turn ends.
+### Why this is a plugin, not a prompt
+
+A system prompt is a request the model can ignore, forget or misread. On-Brand adds three
+things a prompt cannot:
+
+1. **An independent judge.** A rule-based linter scores every draft 0-100. The same text always
+   gets the same verdict, and the model never grades its own work.
+2. **A repair loop.** Drafts that fail go back to your model with the exact problems, and the
+   result is checked again before it can replace the original.
+3. **A gate on actions.** If Hermes tries to send, post or publish off-brand copy through any
+   tool, the call is stopped before it leaves the machine.
+
+In practice a good model often follows the rules on the first try, because On-Brand also gives it
+the rules each turn. The linter, the log and the gate are what make that a guarantee instead of a
+hope: you can see every check in `/onbrand log` and the Desktop feed.
 
 ## What it does
 
@@ -53,11 +62,19 @@ Hard rules (person, banned words, required phrases, length, compliance) fail a d
 
 ## Install
 
+From the catalog (once listed):
+
 ```bash
 hermes plugins install on-brand --enable
 ```
 
-Then, in any Hermes chat:
+Straight from GitHub:
+
+```bash
+hermes plugins install Mhiah/On-Brand --enable
+```
+
+Restart Hermes (or the gateway) after installing. Then, in any Hermes chat:
 
 ```
 /onbrand starter          # adds two example brands to try
@@ -67,6 +84,29 @@ Then, in any Hermes chat:
 Or just tell Hermes about a brand: *"Set up an On-Brand profile for Acme Labs: third person,
 calm and precise, never say synergy or game-changer, max 280 characters, crypto compliance."*
 Hermes calls `onbrand_rules` and saves it.
+
+## Where it works
+
+On-Brand runs inside Hermes itself, so it works on every surface Hermes serves. You install it
+once; every surface below uses the same brands and settings.
+
+| Surface | How to use it |
+|---|---|
+| **Terminal (CLI / TUI)** | Run `hermes`, then type `/onbrand ...` commands or ask for copy in plain English. Checks, fixes and blocks show as `/onbrand` notes under the reply. |
+| **Hermes Desktop** | Same chat commands. Turn on the plugin's Desktop half under **Capabilities → Plugins → On-Brand** to get the status-bar chip (*On-Brand: Nimbus Protocol*) and the On-Brand pane: brand switcher, toggles, totals, quick check and a live feed of fixes and blocks. |
+| **Telegram, Discord, Slack, WhatsApp and other messaging apps** | Connect the app with `hermes gateway setup`, then start the gateway (`hermes gateway start`). Message your bot as usual: `/onbrand` works there too and appears in Telegram's command menu. Replies are checked before they are sent. Turn on `hold_stream` (below) so off-brand text is never shown even briefly. |
+| **API server (OpenAI-compatible `/v1/chat/completions`)** | Apps that talk to Hermes over its API get checked replies with no extra setup. With `hold_stream` on, the response stream carries only the checked text. |
+| **Scheduled jobs and automations** | Copy written by cron jobs or other automations passes through the same checks, and their posting tools hit the same gate. |
+| **Agent tools** | Hermes can call `onbrand_check`, `onbrand_rules`, `onbrand_learn` and `onbrand_voiceover` itself, on any surface, when you ask it to check, set up or learn a brand. |
+
+### Good to know
+
+- **One active brand per Hermes profile.** `/onbrand use <brand>` applies to every chat that
+  profile serves, on every surface. To run two brands at once (say, two client Telegram groups),
+  give each its own Hermes profile.
+- **Streaming.** With `hold_stream` off (the default), a reply can stream in and then be replaced
+  by its fixed version when the turn ends. With it on, users only ever see the checked version.
+  For messaging apps and anything client-facing, turn it on.
 
 ## `/onbrand`
 
@@ -100,8 +140,15 @@ Hermes calls `onbrand_rules` and saves it.
 
 ## Settings
 
-Under **Settings → Plugins → On-Brand** in Desktop, or `plugins.entries.on-brand.settings` in
-`config.yaml`:
+Under **Settings → Plugins → On-Brand** in Desktop, or in `~/.hermes/config.yaml`:
+
+```yaml
+plugins:
+  entries:
+    on-brand:
+      settings:
+        hold_stream: true
+```
 
 | Key | Default | |
 |---|---|---|
